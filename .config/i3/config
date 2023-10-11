@@ -208,10 +208,11 @@ client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgco
 client.urgent           $u-bgcolor      $u-bgcolor      $text           $u-bgcolor 
 
 # Display Wallpaper
-exec_always feh --bg-fill ./wallpaper.jpg
+exec_always feh --bg-fill ~/Pictures/wallpaper_bc.jpg
 
 # Shortcut for Lockscreen
-bindsym $mod+x exec /home/$USER/.config/scripts/lock
+set $lockscreen exec /home/$USER/.config/scripts/lock
+bindsym $mod+x $lockscreen
 
 # Transparency with picom compositor
 exec_always picom
@@ -219,3 +220,22 @@ exec_always picom
 # Allocate applications to workspaces
 for_window [class="Code"] move to workspace $ws1
 for_window [class="Brave-browser"] move to workspace $ws4
+
+# "System mode" for shutdown, logout etc
+set $Locker $lockscreen && sleep 1
+
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $Locker, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"  
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+Pause mode "$mode_system"
