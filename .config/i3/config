@@ -188,7 +188,8 @@ bar {
 
                 active_workspace   #333333 #5f676a #ffff00
                 inactive_workspace #333333 #000000 #ffff00
-                urgent_workspace   #2f343a #900000 #ffffff
+                urgent_workspace   #2326d3 #191949 #ffffff
+
         }
         strip_workspace_numbers yes
 }
